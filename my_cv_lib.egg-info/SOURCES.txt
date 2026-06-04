@@ -1,0 +1,11 @@
+setup.py
+my_cv_lib/__init__.py
+my_cv_lib/custom_models.py
+my_cv_lib/video_utils.py
+my_cv_lib/yolo_detector.py
+my_cv_lib.egg-info/PKG-INFO
+my_cv_lib.egg-info/SOURCES.txt
+my_cv_lib.egg-info/dependency_links.txt
+my_cv_lib.egg-info/requires.txt
+my_cv_lib.egg-info/top_level.txt
+tests/test_library.py
