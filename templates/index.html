@@ -3,61 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Object Detection Dashboard</title>
+    <title>Advanced AI Vision Dashboard</title>
     <style>
+        :root {
+            --bg-color: #0a0a0f;
+            --panel-bg: rgba(20, 20, 35, 0.7);
+            --accent-color: #00ffa3; /* Cyberpunk Neon Green */
+            --accent-glow: rgba(0, 255, 163, 0.3);
+            --text-color: #e2e8f0;
+            --text-muted: #718096;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1e1e24;
-            color: #fff;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 320px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
         }
-        h1 {
-            color: #4caf50;
-            margin-bottom: 10px;
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 0 0 5px 0;
+            background: linear-gradient(135deg, #fff 0%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .container {
-            max-width: 800px;
-            text-align: center;
-            background: #2a2a35;
-            padding: 20px;
+
+        .brand p {
+            color: var(--accent-color);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .metrics-container {
+            margin-top: 40px;
+            flex-grow: 1;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            padding: 15px;
+            margin-bottom: 15px;
         }
-        .video-box {
-            border: 4px solid #4caf50;
-            border-radius: 8px;
-            overflow: hidden;
+
+        .metric-card .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-card .value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-top: 5px;
+            color: #fff;
+        }
+
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: rgba(0, 255, 163, 0.1);
+            color: var(--accent-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 163, 0.2);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 var(--accent-glow);
+            animation: pulse 1.5s infinite;
+        }
+
+        /* --- MAIN CONTENT / VIDEO AREA --- */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: radial-gradient(circle at center, #131322 0%, #0a0a0f 100%);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 960px;
+            border-radius: 20px;
             background: #000;
-            margin-top: 15px;
+            padding: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+                        0 0 40px rgba(0, 255, 163, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
-        img {
+
+        .video-wrapper:hover {
+            border-color: rgba(0, 255, 163, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 
+                        0 0 40px rgba(0, 255, 163, 0.15);
+        }
+
+        .video-container {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
             display: block;
+            line-height: 0;
+        }
+
+        .video-container img {
             width: 100%;
             height: auto;
+            display: block;
         }
-        .status {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #bbb;
+
+        /* --- ANIMATIONS --- */
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 163, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0, 255, 163, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 163, 0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>AI Vision Feed</h1>
-        <p>Real-time Object Detection using YOLOv8 & PyTorch</p>
-        
-        <div class="video-box">
-            <img src="{{ url_for('video_feed') }}" alt="Live Camera Feed Loading...">
+    <div class="sidebar">
+        <div class="top-section">
+            <div class="brand">
+                <h1>NeuralEye v1.0</h1>
+                <p>Computer Vision Engine</p>
+            </div>
+
+            <div class="metrics-container">
+                <div class="metric-card">
+                    <div class="label">Core Architecture</div>
+                    <div class="value">YOLOv8 Nano</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Backend Framework</div>
+                    <div class="value">PyTorch & Flask</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Inference Target</div>
+                    <div class="value">Live Camera [0]</div>
+                </div>
+            </div>
         </div>
-        
-        <div class="status">
-            System Status: <span style="color: #4caf50; font-weight: bold;">● Live</span>
+
+        <div class="bottom-section">
+            <div class="status-tag">
+                <div class="pulse-dot"></div>
+                System Operational
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="video-wrapper">
+            <div class="video-container">
+                <img src="{{ url_for('video_feed') }}" alt="Establishing secure video link...">
+            </div>
         </div>
     </div>
 

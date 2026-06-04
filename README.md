@@ -1,4 +1,4 @@
-# cv-toolkit
+﻿# cv-toolkit
 Collection of CV solutions for practical applications
 
 Tech: PyTorch, OpenCV, YOLO
